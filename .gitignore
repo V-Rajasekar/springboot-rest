@@ -1,0 +1,4 @@
+.idea
+api-spec/.gradle
+api-spec/**
+bin\**.**

@@ -1,0 +1,53 @@
+plugins {
+    id 'org.openapi.generator' version '7.3.0'
+    //id 'com.github.spotbugs' version '5.0.14'
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.16.1'
+    implementation 'io.swagger:swagger-annotations:1.6.13'
+    implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.2.3'
+   
+    implementation 'org.yaml:snakeyaml:2.2'
+}
+
+sourceSets.main.java.srcDirs 'generated-sources/api-tools/src/main/java'
+
+openApiValidate {
+    inputSpec = "$rootDir/api-spec/src/main/resources/oas3.0.yaml".toString()
+    recommend = true
+}
+
+openApiGenerate {
+    generatorName = 'java'
+    inputSpec = "$rootDir/api-spec/src/main/resources/oas3.0.yaml".toString()
+    outputDir = "$rootDir/api-spec/generated-sources/api-tools".toString()
+    modelPackage = 'com.raj.springboot.todo.api.model'
+    configOptions = [
+        dateLibrary: 'java8',
+        library: 'resttemplate',
+        serializableModel     : 'true',
+        useJakartaEe          : "true",
+        containerDefaultToNull: "true"
+    ]
+    globalProperties = [
+        models: ''
+    ]
+    skipValidateSpec = true
+    logToStderr = true
+   /*  schemaMappings.putAll([
+            consignment: 'no.posten.ph.oem.consignment.model.Consignment',
+            consignmentNumber: 'no.posten.ph.oem.consignment.model.ConsignmentNumber',
+            consignmentResponse: 'no.posten.ph.oem.consignment.model.ConsignmentResponse',
+            consignmentEvent: 'no.posten.ph.oem.consignment.model.ConsignmentEvent',
+            error: 'no.posten.ph.oem.consignment.model.Error'
+    ]) */
+    generateAliasAsModel = false
+    // set to true and set environment variable {LANG}_POST_PROCESS_FILE
+    // (e.g. SCALA_POST_PROCESS_FILE) to the linter/formatter to be processed.
+    // This command will be passed one file at a time for most supported post processors.
+    enablePostProcessFile = false
+}
+
+compileJava.dependsOn tasks.openApiGenerate

@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: admin
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 5
+      idle-timeout: 10000
+  jpa:
+    properties:
+      hibernate:
+        format_sql: false
+    show-sql: true

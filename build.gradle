@@ -1,0 +1,92 @@
+import net.researchgate.release.GitAdapter
+
+plugins {
+  id 'application'
+  id 'idea'
+  id 'org.springframework.boot' version '3.2.3'
+  id 'io.spring.dependency-management' version '1.1.2'
+  id 'jacoco'
+  id 'java'
+  id 'maven-publish'
+  id 'net.researchgate.release' version '3.0.2'
+}
+
+
+subprojects {
+  apply plugin: 'java-library'
+  apply plugin: 'maven-publish'
+  afterReleaseBuild.dependsOn publish
+  jar { enabled = true }
+  publishing {
+    repositories {
+     /*  maven {
+        name = 'rv-packages'
+        url = uri('')
+        credentials {
+          username = System.getenv('GITHUB_ACTOR')
+          password = System.getenv('GITHUB_REPO_TOKEN')
+        }
+      } */
+    }
+    publications {
+      gpr(MavenPublication) {
+        from(components['java'])
+        artifactId "${rootProject.name}.${project.name}"
+        version rootProject.version
+        versionMapping {
+          usage('java-api') {
+            fromResolutionOf('runtimeClasspath')
+          }
+          usage('java-runtime') {
+            fromResolutionResult()
+          }
+        }
+      }
+    }
+  }
+  group = 'com.raj.springboot'
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
+  /*   maven {
+      name = 'ph-packages'
+      url = uri('https://maven.pkg.github.com/bring/ph-api-library')
+      credentials {
+        username = System.getenv('GITHUB_ACTOR')
+        password = System.getenv('GITHUB_REPO_TOKEN')
+      }
+    } */
+   
+  }
+}
+
+
+release {
+  failOnCommitNeeded = false
+  failOnPublishNeeded = false
+  failOnSnapshotDependencies = true
+  failOnUnversionedFiles = false
+  failOnUpdateNeeded = true
+  revertOnFail = true
+  preCommitText = ''
+  preTagCommitMessage = 'Release Commit'
+  tagCommitMessage = 'Release Commit'
+  newVersionCommitMessage = 'Release Commit'
+  tagTemplate = '${version}'
+  versionPropertyFile = 'gradle.properties'
+  versionProperties = []
+  snapshotSuffix = '-SNAPSHOT'
+  buildTasks = ['build']
+  ignoredSnapshotDependencies = []
+  pushReleaseVersionBranch = null
+  scmAdapters = [ GitAdapter ]
+  git {
+    requireBranch.set('(master|(^epic-.*))')
+    pushToRemote.set('origin')
+    pushToBranchPrefix.set('')
+    commitVersionFileOnly.set(true)
+    signTag.set(false)
+  }
+}

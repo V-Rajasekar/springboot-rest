@@ -1,0 +1,112 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'idea'
+    id 'application'
+    id 'jacoco'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.2'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+apply plugin: 'io.spring.dependency-management'
+jar {
+    enabled = true
+    manifest {
+        attributes('Main-Class': 'com.rajasekar.api.todo.Application')
+    }
+}
+
+tasks.withType(Test) {
+    jvmArgs += '--add-opens=java.base/java.math=ALL-UNNAMED'
+}
+
+tasks.withType(JavaExec) {
+    jvmArgs += '--add-opens=java.base/java.math=ALL-UNNAMED'
+}
+tasks.jar {
+    manifest.attributes["Main-Class"] = "com.rajasekar.api.todo.Application"
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
+}
+
+ext {
+    jacocoToolVersion = '0.8.7'
+    junitJupiterVersion = '5.8.2'
+}
+
+
+dependencies {
+    implementation project(':api-spec')
+    implementation 'io.github.classgraph:classgraph:4.8.149'
+    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.2.0'
+    implementation 'io.micrometer:micrometer-core'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'jakarta.activation:jakarta.activation-api:2.1.0'
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+    implementation 'net.logstash.logback:logstash-logback-encoder:7.3'
+    implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework:spring-web:6.1.5'
+    implementation 'org.yaml:snakeyaml:2.0'
+    implementation 'com.h2database:h2:2.1.212'
+    runtimeOnly 'com.fasterxml.woodstox:woodstox-core:6.4.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.springframework:spring-test:6.1.4'
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        exclude group: 'org.springframework', module: 'spring-test'
+    }
+}
+
+test {
+    useJUnitPlatform()
+ finalizedBy jacocoTestReport
+    testLogging {
+        events 'passed', 'skipped', 'failed', 'standard_out'
+        exceptionFormat TestExceptionFormat.FULL
+        showExceptions true
+        showCauses true
+        showStackTraces true
+    }
+   
+}
+
+jacoco() {
+    toolVersion = jacocoToolVersion
+}
+
+jacocoTestReport() {
+    reports {
+        html.required = true
+        xml.required = true
+        csv.required = true
+    }
+    afterEvaluate {
+        getClassDirectories().setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+              //  'no/posten/ph/oem/consignment/api/constant',
+                '**/*Application**'
+            ])
+        }))
+    }
+}
