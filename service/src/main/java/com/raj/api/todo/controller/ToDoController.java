@@ -1,7 +1,7 @@
-package com.rajasekar.api.todo.controller;
+package com.raj.api.todo.controller;
 
-import com.rajasekar.api.todo.model.ToDoItem;
-import com.rajasekar.api.todo.repository.ToDoRepository;
+import com.raj.api.todo.repository.ToDoRepository;
+import com.raj.api.todo.entity.ToDoItem;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

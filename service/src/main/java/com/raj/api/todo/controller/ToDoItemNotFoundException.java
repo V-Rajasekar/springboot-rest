@@ -1,4 +1,4 @@
-package com.rajasekar.api.todo.controller;
+package com.raj.api.todo.controller;
 
 public class ToDoItemNotFoundException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package com.rajasekar.api.todo;
+package com.raj.api.todo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

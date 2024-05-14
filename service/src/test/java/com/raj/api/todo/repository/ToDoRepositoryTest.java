@@ -1,6 +1,6 @@
-package com.rajasekar.api.todo.repository;
+package com.raj.api.todo.repository;
 
-import com.rajasekar.api.todo.model.ToDoItem;
+import com.raj.api.todo.entity.ToDoItem;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

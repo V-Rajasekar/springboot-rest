@@ -1,4 +1,4 @@
-package com.rajasekar.api.todo.controller;
+package com.raj.api.todo.controller;
 
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
