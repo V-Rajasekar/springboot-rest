@@ -2,3 +2,9 @@
 api-spec/.gradle
 api-spec/**
 bin\**.**
+/gradle/
+/bin/
+/service/build/
+/.gradle/
+/gradlew.bat
+/gradlew
