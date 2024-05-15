@@ -14,7 +14,7 @@ dependencies {
 
 sourceSets.main.java.srcDirs 'generated-sources/api-tools/src/main/java'
 
-openApiValidate {
+openApiValidate {    
     inputSpec = "$rootDir/api-spec/src/main/resources/oas3.0.yaml".toString()
     recommend = true
 }
@@ -37,11 +37,7 @@ openApiGenerate {
     skipValidateSpec = true
     logToStderr = true
    /*  schemaMappings.putAll([
-            consignment: 'no.posten.ph.oem.consignment.model.Consignment',
-            consignmentNumber: 'no.posten.ph.oem.consignment.model.ConsignmentNumber',
-            consignmentResponse: 'no.posten.ph.oem.consignment.model.ConsignmentResponse',
-            consignmentEvent: 'no.posten.ph.oem.consignment.model.ConsignmentEvent',
-            error: 'no.posten.ph.oem.consignment.model.Error'
+          error: 'com.raj.todo.api.model.Error'
     ]) */
     generateAliasAsModel = false
     // set to true and set environment variable {LANG}_POST_PROCESS_FILE
