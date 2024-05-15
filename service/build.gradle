@@ -15,12 +15,9 @@ java {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
-apply plugin: 'io.spring.dependency-management'
+
 jar {
     enabled = true
-    manifest {
-        attributes('Main-Class': 'com.rajasekar.api.todo.Application')
-    }
 }
 
 tasks.withType(Test) {
@@ -29,9 +26,6 @@ tasks.withType(Test) {
 
 tasks.withType(JavaExec) {
     jvmArgs += '--add-opens=java.base/java.math=ALL-UNNAMED'
-}
-tasks.jar {
-    manifest.attributes["Main-Class"] = "com.rajasekar.api.todo.Application"
 }
 
 repositories {
@@ -104,8 +98,8 @@ jacocoTestReport() {
     afterEvaluate {
         getClassDirectories().setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
-              //  'no/posten/ph/oem/consignment/api/constant',
-                '**/*Application**'
+           
+                //'**/*Application**'
             ])
         }))
     }
