@@ -28,6 +28,9 @@ tasks.withType(JavaExec) {
     jvmArgs += '--add-opens=java.base/java.math=ALL-UNNAMED'
 }
 
+tasks.named('bootBuildImage') {
+	builder = 'paketobuildpacks/builder-jammy-base:latest'
+}
 repositories {
     mavenCentral()
     mavenLocal()
